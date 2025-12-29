@@ -9,8 +9,71 @@ const TEMP_INCREMENT = 1.5;
 const TEMP_DECAY_PER_DAY = 0.4;
 const DECAY_CHECK_INTERVAL_DAYS = 1;
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+const now = new Date();
+const daysAgo = (days: number) => new Date(now.getTime() - days * DAY_MS).toISOString();
+
+const SEED_BOOKS: Book[] = [
+  {
+    id: 'seed_1',
+    isbn: 'SEED-001',
+    title: 'Sample Book One',
+    author: 'Jane Doe',
+    publisher: 'Ondo Press',
+    coverUrl: 'https://dummyimage.com/200x300/2b4170/e7e5e4&text=Book+One',
+    description: 'A warm starter book for the demo library.',
+    currentTemperature: 82.4,
+    accumulatedTemperature: 82.4,
+    temperature: 82.4,
+    lastActiveAt: daysAgo(0),
+    totalReviews: 12
+  },
+  {
+    id: 'seed_2',
+    isbn: 'SEED-002',
+    title: 'Sample Book Two',
+    author: 'Alex Kim',
+    publisher: 'Night Sky House',
+    coverUrl: 'https://dummyimage.com/200x300/223055/e7e5e4&text=Book+Two',
+    description: 'A second sample with a cooler tone.',
+    currentTemperature: 74.1,
+    accumulatedTemperature: 74.1,
+    temperature: 74.1,
+    lastActiveAt: daysAgo(2),
+    totalReviews: 7
+  },
+  {
+    id: 'seed_3',
+    isbn: 'SEED-003',
+    title: 'Sample Book Three',
+    author: 'Morgan Lee',
+    publisher: 'Aurora Studio',
+    coverUrl: 'https://dummyimage.com/200x300/35508c/e7e5e4&text=Book+Three',
+    description: 'Demo entry to keep the shelf populated.',
+    currentTemperature: 66.8,
+    accumulatedTemperature: 66.8,
+    temperature: 66.8,
+    lastActiveAt: daysAgo(5),
+    totalReviews: 4
+  },
+  {
+    id: 'seed_4',
+    isbn: 'SEED-004',
+    title: 'Sample Book Four',
+    author: 'Chris Park',
+    publisher: 'Meteor Books',
+    coverUrl: 'https://dummyimage.com/200x300/1a2440/e7e5e4&text=Book+Four',
+    description: 'A calm sample to round out the grid.',
+    currentTemperature: 61.2,
+    accumulatedTemperature: 61.2,
+    temperature: 61.2,
+    lastActiveAt: daysAgo(9),
+    totalReviews: 2
+  }
+];
+
 // 초기 더미 데이터는 제거하고 빈 배열로 시작합니다.
-const INITIAL_BOOKS: Book[] = [];
+const INITIAL_BOOKS: Book[] = SEED_BOOKS;
 const INITIAL_REVIEWS: Review[] = [];
 
 type EventType = 'review';
@@ -63,8 +126,13 @@ const saveEvents = (events: ReviewEvent[]) => {
 
 const getStoredBooks = (): Book[] => {
   const stored = localStorage.getItem(STORAGE_KEY_BOOKS);
-  const books = stored ? (JSON.parse(stored) as Book[]) : INITIAL_BOOKS;
-  return books.map(normalizeBook);
+  const parsed = stored ? (JSON.parse(stored) as Book[]) : [];
+  const base = parsed.length > 0 ? parsed : INITIAL_BOOKS;
+  const normalized = base.map(normalizeBook);
+  if (!stored || parsed.length === 0) {
+    saveBooks(normalized);
+  }
+  return normalized;
 };
 
 const getStoredReviews = (): Review[] => {
