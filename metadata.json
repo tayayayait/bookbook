@@ -1,0 +1,5 @@
+{
+  "name": "Ondo (Book Temperature)",
+  "description": "A book review platform that measures 'Temperature' (liveness) instead of ratings. It tracks how actively a book is being read and discussed in the present moment.",
+  "requestFramePermissions": []
+}
