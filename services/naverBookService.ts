@@ -1,6 +1,8 @@
-﻿import { Book } from '../types';
+import { Book } from '../types';
 
-const NAVER_BOOK_ENDPOINT = '/naver/v1/search/book.json';
+const NAVER_BOOK_ENDPOINT = import.meta.env.PROD
+  ? '/.netlify/functions/naver-book'
+  : '/naver/v1/search/book.json';
 const PLACEHOLDER_COVER = 'https://dummyimage.com/200x300/e7e5e4/78716c&text=No+Cover';
 
 interface NaverBookItem {
