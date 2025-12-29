@@ -135,7 +135,7 @@ const Home: React.FC = () => {
               leftIcon={<Search className="w-4 h-4" />}
               onClick={() => setIsSearchOpen(true)}
             >
-              책 찾아보기
+              책 찾아보기(네이버book검색 api연결 완료)
             </Button>
           </div>
         </div>
