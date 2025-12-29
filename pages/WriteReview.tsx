@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, BookOpen, X } from 'lucide-react';
 import { Book, User } from '../types';
@@ -245,7 +245,7 @@ const WriteReview: React.FC = () => {
           fullWidth
           loading={isSubmitting}
           leftIcon={!isSubmitting ? <BookOpen className="w-5 h-5" /> : undefined}
-          disabled={isSubmitting || headline.trim().length < HEADLINE_MIN || body.trim().length < BODY_MIN}
+          disabled={isSubmitting}
         >
           기록 남기기
         </Button>
